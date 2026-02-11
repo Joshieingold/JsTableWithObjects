@@ -79,6 +79,63 @@ function FilterJson(inObj, filter = true) {
     inObj = FilterCopilot(inObj);
     return inObj;
 }
+/////////
+// New //
+/////////
+
+function FilterObj(inObj) {
+    let cityInput = GetValueById("#cityInput").toLowerCase();
+    let countryInput = GetValueById("#countryInput").toLowerCase();
+    let regionInput = GetValueById("#regionInput").toLowerCase();
+    let dayInput = GetValueById("#dayInput").toLowerCase();
+    let pilotBool = document.querySelector("#pilot-required").checked;
+    let copilotBool = document.querySelector("#copilot-required").checked;
+    for (let i = 0; i < inObj.flights.length; i++) {
+        let currentObj = inObj.flights[i];
+        if (!CheckCity(currentObj.destination.city, cityInput)) {
+            continue;
+        }
+        if (!CheckCountry(currentObj.destination.country, countryInput)) {
+            continue;
+        }
+
+        // Idea if it fails one the loop will continue;
+    }
+}
+function CheckCity(currentDataString, targetDataString) {
+    currentDataString = currentDataString.toLowerCase();
+
+    if (targetDataString === "") {
+        return true;
+    }
+    if (currentDataString === "" || undefined) {
+        return false;
+    }
+    if (targetDataString.startsWith(currentDataString)) {
+        return true;
+    }
+    return false;
+}
+
+function CheckCountry(currentDataString, targetDataString) {
+    currentDataString = currentDataString.toLowerCase();
+
+    if (targetDataString === "") {
+        return true;
+    }
+    if (currentDataString === "" || undefined) {
+        return false;
+    }
+    if (targetDataString.startsWith(currentDataString)) {
+        return true;
+    }
+    return false;
+}
+function CheckRegion(currentDataString) {}
+function CheckDay(currentDataString) {}
+function CheckMinMax(currentDataString) {}
+function CheckPilot(currentDataString) {}
+function CheckCopilot(currentDataString) {}
 
 ////////////////////
 // Click Handlers //
