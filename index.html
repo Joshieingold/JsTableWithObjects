@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>A3 - Using Objects - Joshua Lynch</title>
+        <script src="./index.js"></script>
+        <link href="./styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="title">
+            <h2>Joshua Lynch A3 - Flight Search</h2>
+        </div>
+        <div class="data">
+            <div class="left-data">
+                <div>
+                    <h3 id="table-title">Flights</h3>
+                </div>
+                <div id="the-table-container"></div>
+            </div>
+            <div class="right-data">
+                <div>
+                    <h3>Search Parameters</h3>
+                </div>
+                <div class="control-panel">
+                    <div class="input-container">
+                        <label for="city-input">City:</label>
+                        <input id="city-input" />
+                    </div>
+                    <div class="input-container">
+                        <label for="country-input">Country:</label>
+                        <input id="country-input" />
+                    </div>
+                    <div class="input-container">
+                        <label for="region-input">Region:</label>
+                        <input id="region-input" />
+                    </div>
+                    <div class="input-container">
+                        <label for="depart-input">Day of Week:</label>
+                        <select id="depart-input">
+                            <option value="Any">Any</option>
+                            <option value="Mon">Monday</option>
+                            <option value="Tue">Tuesday</option>
+                            <option value="Wed">Wednesday</option>
+                            <option value="Thu">Thursday</option>
+                            <option value="Fri">Friday</option>
+                            <option value="Sat">Saturday</option>
+                            <option value="Sun">Sunday</option>
+                        </select>
+                    </div>
+                    <p>Departure Time</p>
+                    <div class="input-container">
+                        <label for="depart-min">Min:</label>
+                        <input id="depart-min" />
+                    </div>
+                    <div class="input-container">
+                        <label for="depart-max">Max:</label>
+                        <input id="depart-max" />
+                    </div>
+
+                    <p>Required</p>
+                    <div class="input-container">
+                        <label for="pilot-required">Pilot:</label>
+                        <input type="checkbox" id="pilot-required" />
+                    </div>
+                    <div class="input-container">
+                        <label for="copilot-required">Co-Pilot</label>
+                        <input type="checkbox" id="copilot-required" />
+                    </div>
+                    <button id="apply-filters">Apply Filters</button>
+                    <button id="show-all">Show All Flights</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

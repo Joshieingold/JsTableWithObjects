@@ -1,0 +1,97 @@
+* {
+    --table-head-color: #003366;
+    --table-accent-color: #d5eff3;
+    --table-normal-color: #ffffff;
+    --table-border-color: #b2bfc1;
+    --alt-font-color: #ffffff;
+    --font-color: #392d2c;
+    --control-border-color: #d49e9a;
+    --control-background-color: #f5f5dc;
+    --alt-control-background-color: #d6d6c2;
+    --control-highlight-color: orange;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    color: var(--font-color);
+    align-items: center;
+    box-sizing: border-box;
+}
+.title {
+    border-bottom: 1px solid var(--table-border-color);
+    text-align: center;
+    width: 100%;
+}
+.data {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.left-data {
+    display: flex;
+    flex-direction: column;
+}
+.right-data {
+    display: flex;
+    flex-direction: column;
+}
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--control-background-color);
+    border: 1px dashed var(--control-border-color);
+    padding: 10px;
+}
+.control-panel p {
+    text-align: left;
+    width: 100%;
+    font-weight: bold;
+}
+.input-container {
+    display: flex;
+    text-align: left;
+    width: 100%;
+    justify-content: left;
+    align-items: left;
+}
+.input-container input {
+    width: 55%;
+}
+.input-container label {
+    width: 35%;
+}
+table,
+tr,
+th,
+td {
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+    padding: 5px;
+}
+th {
+    background-color: var(--table-head-color);
+    color: var(--alt-font-color);
+}
+tr:nth-child(even) {
+    background-color: var(--table-accent-color);
+}
+tr:nth-child(odd) {
+    background-color: var(--table-normal-color);
+}
+#table-title {
+    font-weight: bold;
+}
+button {
+    background-color: var(--alt-control-background-color);
+    border: 1px solid var(--control-border-color);
+    width: 100%;
+    padding: 5px;
+    border-radius: 7px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--control-highlight-color);
+}
