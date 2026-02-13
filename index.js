@@ -68,16 +68,156 @@ function FilterJson(inObj, filter = true) {
     if (!filter) {
         return inObj;
     }
-    // At the cost of performance I did this, but can be done in one loop
-    // instead of filters*O(n)
-    inObj = FilterCity(inObj);
-    inObj = FilterCountry(inObj);
-    inObj = FilterRegion(inObj);
-    inObj = FilterDay(inObj);
-    inObj = FilterMinMax(inObj);
-    inObj = FilterPilot(inObj);
-    inObj = FilterCopilot(inObj);
-    return inObj;
+    return FilterObj(inObj);
+}
+
+function FilterObj(inObj) {
+    let cityInput = GetValueById("#city-input").toLowerCase();
+    let countryInput = GetValueById("#country-input").toLowerCase();
+    let regionInput = GetValueById("#region-input");
+    let dayInput = GetValueById("#depart-input");
+    let minInput = GetValueById("#depart-min");
+    let maxInput = GetValueById("#depart-max");
+    let pilotBool = document.querySelector("#pilot-required").checked;
+    let copilotBool = document.querySelector("#copilot-required").checked;
+    let returnArray = [];
+    for (let i = 0; i < inObj.flights.length; i++) {
+        let currentObj = inObj.flights[i];
+        if (!CheckCity(currentObj.destination.city, cityInput)) {
+            continue;
+        }
+        if (!CheckCountry(currentObj.destination.country, countryInput)) {
+            continue;
+        }
+        if (!CheckRegion(currentObj.destination.region, regionInput)) {
+            continue;
+        }
+        if (!CheckDay(currentObj.dayOfWeek, dayInput)) {
+            continue;
+        }
+        if (!CheckMinMax(currentObj.departureTime, minInput, maxInput)) {
+            continue;
+        }
+        if (pilotBool && !CheckPilot(currentObj.pilot)) {
+            continue;
+        }
+        if (copilotBool && !CheckCopilot(currentObj.copilot)) {
+            continue;
+        }
+        // If all pass add it to the return list
+        returnArray.push(currentObj);
+    }
+    return { flights: returnArray };
+}
+
+/////////////
+// Filters //
+/////////////
+
+function CheckCity(currentDataString, targetDataString) {
+    currentDataString = currentDataString.toLowerCase();
+
+    // If its empty, do not filter
+    if (targetDataString === "") {
+        return true;
+    }
+    // If string does not exist, FAIL
+    if (currentDataString === "" || currentDataString === undefined) {
+        return false;
+    }
+    // If the string starts with target PASS
+    if (currentDataString.startsWith(targetDataString)) {
+        return true;
+    }
+    // If does not hit a pass case it FAILS
+    return false;
+}
+
+function CheckCountry(currentDataString, targetDataString) {
+    currentDataString = currentDataString.toLowerCase();
+
+    // If its empty, do not filter
+    if (targetDataString === "") {
+        return true;
+    }
+    // If string does not exist, FAIL
+    if (currentDataString === "" || currentDataString === undefined) {
+        return false;
+    }
+    // If the string starts with target PASS
+    if (currentDataString.startsWith(targetDataString)) {
+        return true;
+    }
+    // If does not hit a pass case it FAILS
+    return false;
+}
+
+function CheckRegion(currentDataInt, targetDataString) {
+    // If its empty, do not filter, TRUE
+    if (targetDataString === "") {
+        return true;
+    }
+    let targetDataInt = Number(targetDataString); // Probably can pass the function an int
+    // If int does not exist, FAIL
+    if (currentDataInt === "" || currentDataInt === undefined) {
+        return false;
+    }
+    // If the current data = the target PASS
+    if (currentDataInt === targetDataInt) {
+        return true;
+    }
+    // If does not hit a pass case it FAILS
+    return false;
+}
+
+function CheckDay(currentDataString, targetDataString) {
+    // If any is specified return true, PASS
+    if (targetDataString === "Any") {
+        return true;
+    }
+    // If string does not exist, FAIL
+    if (currentDataString === "" || currentDataString === undefined) {
+        return false;
+    }
+    // If the values are the same, PASS
+    if (currentDataString === targetDataString) {
+        return true;
+    }
+    // If does not hit a pass case it FAILS
+    return false;
+}
+
+function CheckMinMax(currentDataInt, targetMin, targetMax) {
+    if (targetMin === "") {
+        targetMin = 0;
+    }
+    if (targetMax === "") {
+        targetMax = 2400;
+    }
+    targetMin = Number(targetMin);
+    targetMax = Number(targetMax);
+
+    if (currentDataInt === "" || currentDataInt === undefined) {
+        return false;
+    }
+    if (targetMin <= currentDataInt && currentDataInt <= targetMax) {
+        return true;
+    }
+    return false;
+}
+
+function CheckPilot(currentDataString) {
+    if (currentDataString === "" || currentDataString === undefined) {
+        return false;
+    }
+    return true;
+}
+
+function CheckCopilot(currentDataString) {
+    if (currentDataString === "" || currentDataString === undefined) {
+        return false;
+    }
+    return true;
 }
 
 ////////////////////
@@ -95,148 +235,6 @@ function UpdateTableWithoutFilters() {
     CreateTable(allFlights);
 }
 
-/////////////
-// Filters //
-/////////////
-
-// Double checks data and passes over cities that do not start with input.
-function FilterCity(inObj) {
-    let searchCity = GetValueById("#city-input").toLowerCase();
-    let returnArray = [];
-    if (searchCity === "") {
-        return inObj;
-    }
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.destination.city === undefined) {
-            continue;
-        }
-        if (currentData.destination.city.toLowerCase().startsWith(searchCity)) {
-            returnArray.push(currentData);
-        }
-    }
-    return { flights: returnArray };
-}
-
-// Double checks data and passes over countries that do not start with input.
-function FilterCountry(inObj) {
-    let searchCountry = GetValueById("#country-input").toLowerCase();
-    let returnArray = [];
-    if (searchCountry === "") {
-        return inObj;
-    }
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.destination.country === undefined) {
-            continue;
-        }
-        if (
-            currentData.destination.country
-                .toLowerCase()
-                .startsWith(searchCountry)
-        ) {
-            returnArray.push(currentData);
-        }
-    }
-    return { flights: returnArray };
-}
-
-// Double checks data and passes over regions that do not start with input.
-function FilterRegion(inObj) {
-    let searchRegion = GetValueById("#region-input");
-    let returnArray = [];
-    if (searchRegion === "") {
-        return inObj;
-    }
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.destination.region === undefined) {
-            continue;
-        }
-        if (currentData.destination.region === Number(searchRegion)) {
-            returnArray.push(currentData);
-        }
-    }
-    return { flights: returnArray };
-}
-
-// Passes over data that is not selected day, unless "Any"
-function FilterDay(inObj) {
-    let searchDay = GetValueById("#depart-input");
-    let returnArray = [];
-    if (searchDay === "Any") {
-        return inObj;
-    }
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.dayOfWeek === searchDay) {
-            returnArray.push(currentData);
-        }
-    }
-    return { flights: returnArray };
-}
-
-// Cleans minimum/maximum inputs and skips data out of bounds
-function FilterMinMax(inObj) {
-    let min = GetValueById("#depart-min");
-    let max = GetValueById("#depart-max");
-    let returnArray = [];
-    if (min === "") {
-        min = 0;
-    }
-    if (max === "") {
-        max = 2400;
-    }
-    min = Number(min);
-    max = Number(max);
-
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.departureTime < min) {
-            continue;
-        }
-        if (currentData.departureTime > max) {
-            continue;
-        }
-        returnArray.push(currentData);
-    }
-    return { flights: returnArray };
-}
-
-// Passes over data that does not have a pilot defined
-function FilterPilot(inObj) {
-    let searchPilot = document.querySelector("#pilot-required").checked;
-    let returnArray = [];
-    if (searchPilot === false) {
-        return inObj;
-    }
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.pilot === undefined) {
-            continue;
-        }
-        returnArray.push(currentData);
-    }
-    return { flights: returnArray };
-}
-
-// Passes over data that does not have a copilot defined
-function FilterCopilot(inObj) {
-    let searchPilot = document.querySelector("#copilot-required").checked;
-    let returnArray = [];
-    if (searchPilot === false) {
-        return inObj;
-    }
-    for (let i = 0; i < inObj.flights.length; i++) {
-        let currentData = inObj.flights[i];
-        if (currentData.copilot === undefined) {
-            continue;
-        }
-        returnArray.push(currentData);
-    }
-    return { flights: returnArray };
-}
-
 ///////////////////////////////
 // Quality of Life Functions //
 ///////////////////////////////
@@ -249,6 +247,9 @@ function AddButtonById(id, func) {
 
 // Gets a value from an input and returns the string result.
 function GetValueById(id) {
+    if (document.querySelector(id) === null) {
+        console.log(id, " Failed!");
+    }
     return document.querySelector(id).value.trim();
 }
 
