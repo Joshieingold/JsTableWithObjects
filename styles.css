@@ -33,6 +33,7 @@ body {
 }
 .right-data {
     display: flex;
+    width: 20%;
     flex-direction: column;
 }
 .control-panel {
@@ -61,6 +62,9 @@ body {
 }
 .input-container label {
     width: 35%;
+}
+.input-container select {
+    width: 58%;
 }
 table,
 tr,
